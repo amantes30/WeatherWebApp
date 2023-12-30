@@ -10,6 +10,7 @@
     <meta http-equiv=“CACHE-CONTROL” content=”NO-CACHE”>
     <!-- CSS Stylesheets -->
     <link rel="stylesheet" href="css/master.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <title>API Project</title>
 </head>
@@ -18,11 +19,36 @@
 
     <h1>API Project</h1>
     <main>
+        <form action="/:countryname">
+            <select name="region" id="selectRegionOpt">
+                <option value="0">select city</option>
+                <% countrylist.forEach(element => 
+                { %>
+                 <option value="<%= element["latlng"]%>"><%= element["name"] %></option>
+                <% }); %>
+            </select>
+        </form>
+        <ul class="item-container">
+            <li class="item">
+                <h2>Dec 30</h2>
+                <div class="weather-icon">
+                    <img src="https://www.7timer.info/img/misc/about_two_clear.png" alt="" style="height: 100%; width: 100%;">
+                </div>
+                <div>
+                    <p>Mostly Cloudy</p>
+                    <p>High : 4 C</p>
+                    <p>Low : 2 C</p>
+                </div>
+                
+            </li>
+            <li class="item"></li>
+            <li class="item"></li>
+            <li class="item"></li>
+            <li class="item"></li>
+            <li class="item"></li>
+            <li class="item"></li>
+        </ul>
         
-        <select name="region" id="selectRegionOpt">
-            <option value="0">select city</option>
-            <option value="eth">Ethiopia</option>
-        </select>
     </main>
     <footer>
         <p class="copyright-text">© Copyright 2023 _______ </p>
