@@ -11,16 +11,88 @@ document.addEventListener("DOMContentLoaded", ()=>{
     dropDown.addEventListener("change", ()=>{
         console.log("NEW SELECT")
         
+        const latitude = dropDown.value.split(',')[0];
+        const longitude = dropDown.value.split(',')[1];
+        
         const selectedValue = dropDown.ariaValueMax;
         
-        h();
+        h(longitude, latitude);
         
     })
 })
+function MakeItem(info){
+    const itemDiv = document.createElement('li');
+    const date = document.createElement('h2');
+    const weatherIcon = document.createElement('div');
+    const weatherIconimg = document.createElement('img');
+    const otherInfoDiv= document.createElement('div');
+    const condition_p = document.createElement('p')
+    const high_p = document.createElement('p')
+    const low_p = document.createElement('p')
 
-async function h(){
-    return await axios.get('http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=meteo&output=json')
+    otherInfoDiv.append(condition_p)
+    otherInfoDiv.append(high_p)
+    otherInfoDiv.append(low_p)
+
+    weatherIcon.classList.add('weather-icon')
+    condition_p.textContent = getCondition(info);
+    weatherIconimg.src = getIconUrl(info['cloudcover']);
+    weatherIcon.append(weatherIconimg);
+
+    itemDiv.append(date);
+    itemDiv.append(weatherIcon);
+    itemDiv.append(otherInfoDiv);
+    itemDiv.classList.add("item")
+    
+    document.querySelector('.item-container').append(itemDiv)
+    
+}
+async function h(lon, lat){
+    let forecast7days = []
+    return await axios.get(`http://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`)
     .then((res) => {
+        res.data["dataseries"].forEach(element => {
+            if(forecast7days.length < 7){
+                forecast7days.push(element)
+                MakeItem(element)
+            }
+            else return;
+        });
         console.log( res.data)
+        console.log(forecast7days)
     })
+}
+
+function getIconUrl(info){
+    let url = '/images/rain.png';
+    switch(info){
+        case info <= 2:
+            url = '/images/clear.png'
+            
+            break;
+        case 2:
+            break;
+    }
+    return url;
+}
+function getCondition(info){
+    
+    if(info['cloudcover']<=2){
+        return "Clear"
+    }
+    else if (info['cloudcover'] >2 && info['cloudcover'] <= 5) {
+        if (info['rh2m'] > "90%"){
+            return "Foggy";
+        }
+        return "Partly Cloudy"
+    }
+    else if (info['cloudcover'] >5 && info['cloudcover'] <=7){
+        return "Cloudy"
+    }
+    else if (info['cloudcover'] >7){
+        return "Foggy"
+    }
+    else{
+        return "Undefined"
+    }
 }
