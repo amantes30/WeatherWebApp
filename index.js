@@ -64,6 +64,6 @@ app.get('/:countryname', (req, res)=>{
     getCountryList();
     res.send(countryname)
 })
-app.listen(port, ()=>{
+app.listen("https://amantes30.github.io/WeatherWebApp/", ()=>{
     console.log(`LISTENING ON PORT ${port}`)
 })
