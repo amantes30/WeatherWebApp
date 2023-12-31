@@ -7,8 +7,7 @@ const app = express();
 const port = 3000;
 let countrylist = [];
 
-async function j(){
-    console.log("wait me")
+async function getCountryList(){
     return await axios.get("https://restcountries.com/v3.1/region/asia?fields=name,latlng")
     .then((res) =>{
         res.data.forEach(element => {
@@ -31,12 +30,12 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.get('/', async (req, res)=>{
-    await j();
+    await getCountryList();
     res.render('index', { countrylist });
 })
 app.get('/:countryname', (req, res)=>{
     const {countryname} = req.params;
-    j();
+    getCountryList();
     res.send(countryname)
 })
 app.listen(port, ()=>{

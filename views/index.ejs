@@ -17,11 +17,11 @@
 
 <body>
 
-    <h1>API Project</h1>
+    <h1>Weather</h1>
     <main>
         <form action="/:countryname">
-            <select name="region" id="selectRegionOpt">
-                <option value="0">select city</option>
+            <select title="region" name="region" id="selectRegionOpt" >
+                <option value="0">Select Country</option>
                 <% countrylist.forEach(element => 
                 { %>
                  <option value="<%= element["latlng"]%>"><%= element["name"] %></option>
